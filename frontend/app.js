@@ -473,7 +473,7 @@ async function simulatePayment() {
 
 // Payment Button Click Handler
 // Set to true for production with ToyyibPay, false for testing
-const USE_TOYYIBPAY = false; // Temporarily disabled - ToyyibPay credentials need updating
+const USE_TOYYIBPAY = true;
 
 simulatePayBtn.addEventListener('click', async () => {
     if (USE_TOYYIBPAY) {
