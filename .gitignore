@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+apify-actor/node_modules/
+
+# Environment
+.env
+*.env.local
+
+# Generated files
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/generated/*
+!backend/generated/.gitkeep
+backend/logs/*
+!backend/logs/.gitkeep
+backend/data/*
+!backend/data/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*

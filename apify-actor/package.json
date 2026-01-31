@@ -1,0 +1,13 @@
+{
+  "name": "resume-pdf-parser",
+  "version": "1.0.0",
+  "description": "Extract structured data from resume PDFs",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "dependencies": {
+    "apify": "^3.1.0",
+    "pdf-parse": "^1.1.1"
+  }
+}

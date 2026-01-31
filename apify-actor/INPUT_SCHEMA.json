@@ -1,0 +1,14 @@
+{
+  "title": "Resume PDF Parser Input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "pdfUrl": {
+      "title": "PDF URL",
+      "type": "string",
+      "description": "Public URL to the resume PDF file",
+      "editor": "textfield"
+    }
+  },
+  "required": ["pdfUrl"]
+}
