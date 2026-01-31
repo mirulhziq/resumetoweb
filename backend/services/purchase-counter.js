@@ -1,19 +1,27 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-const FILE = path.join(__dirname, '../data/purchase-counter.json');
+const DATA_DIR = path.join(__dirname, '../data');
+const FILE = path.join(DATA_DIR, 'purchase-counter.json');
 const MAX = 50;
 
 class PurchaseCounter {
     async initialize() {
         try {
-            await fs.access(FILE);
-        } catch {
-            await fs.writeFile(FILE, JSON.stringify({
-                count: 0,
-                purchases: [],
-                soldOutAt: null
-            }, null, 2));
+            // Ensure data directory exists first
+            await fs.mkdir(DATA_DIR, { recursive: true });
+            
+            try {
+                await fs.access(FILE);
+            } catch {
+                await fs.writeFile(FILE, JSON.stringify({
+                    count: 0,
+                    purchases: [],
+                    soldOutAt: null
+                }, null, 2));
+            }
+        } catch (err) {
+            console.error('PurchaseCounter init error (non-fatal):', err.message);
         }
     }
     

@@ -36,14 +36,19 @@ const dataDir = path.join(__dirname, 'data');
 
 // Create directories
 async function ensureDirectories() {
-    await fs.mkdir(uploadsDir, { recursive: true });
-    await fs.mkdir(generatedDir, { recursive: true });
-    await fs.mkdir(logsDir, { recursive: true });
-    await fs.mkdir(dataDir, { recursive: true });
-    await counter.initialize();
+    try {
+        await fs.mkdir(uploadsDir, { recursive: true });
+        await fs.mkdir(generatedDir, { recursive: true });
+        await fs.mkdir(logsDir, { recursive: true });
+        await fs.mkdir(dataDir, { recursive: true });
+        await counter.initialize();
+        console.log('Directories initialized successfully');
+    } catch (err) {
+        console.error('Directory init error (non-fatal):', err.message);
+    }
 }
 
-ensureDirectories();
+ensureDirectories().catch(err => console.error('ensureDirectories failed:', err));
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
