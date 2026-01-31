@@ -383,9 +383,10 @@ function checkPaymentReturn() {
         window.history.replaceState({}, document.title, window.location.pathname);
         
         // Hide upload section, show generation status
-        document.getElementById('upload-section').style.display = 'none';
+        const uploadSection = document.getElementById('upload');
+        if (uploadSection) uploadSection.style.display = 'none';
         if (validationSection) validationSection.style.display = 'none';
-        generationStatus.style.display = 'block';
+        if (generationStatus) generationStatus.style.display = 'block';
         
         // Start polling for this order
         currentSaleId = orderId;
