@@ -286,6 +286,12 @@ function startPolling(saleId) {
                 }
             });
 
+            // Handle pending_payment status (waiting for ToyyibPay callback)
+            if (data.status === 'pending_payment') {
+                if (progressMessage) progressMessage.textContent = 'Confirming your payment... Please wait.';
+                return; // Keep polling
+            }
+
             const baseCopy = statusCopy[data.status] || 'Working…';
             const longWaitNudge =
                 (data.status === 'parsing' && elapsedSeconds > 35)
@@ -339,6 +345,15 @@ function startPolling(saleId) {
                     },
                     saleId
                 );
+            } else if (data.status === 'payment_failed') {
+                clearInterval(pollInterval);
+                showErrorPanel(
+                    {
+                        message: "Payment was not completed.",
+                        details: `${data.paymentReason || 'Payment was cancelled or failed.'}\n\nPlease try again or contact admin: 011 1535 0810`
+                    },
+                    saleId
+                );
             }
 
         } catch (err) {
@@ -366,6 +381,11 @@ function checkPaymentReturn() {
     if (status === 'success' && orderId) {
         // Clear URL params
         window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Hide upload section, show generation status
+        document.getElementById('upload-section').style.display = 'none';
+        if (validationSection) validationSection.style.display = 'none';
+        generationStatus.style.display = 'block';
         
         // Start polling for this order
         currentSaleId = orderId;
