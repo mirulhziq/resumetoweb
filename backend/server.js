@@ -330,10 +330,11 @@ app.use((error, req, res, next) => {
     });
 });
 
-// Start server
-app.listen(PORT, () => {
+// Start server - bind to 0.0.0.0 for Railway/Docker
+app.listen(PORT, '0.0.0.0', () => {
     console.log('\n╔════════════════════════════════════╗');
     console.log('║  Resume to Web API Running        ║'); 
     console.log('║  Port:', PORT.toString().padEnd(21, ' '), '║');
+    console.log('║  Host: 0.0.0.0                    ║');
     console.log('╚════════════════════════════════════╝\n');
 });
