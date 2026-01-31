@@ -78,6 +78,9 @@ router.post('/create-bill', async (req, res) => {
         });
 
         // Create bill via ToyyibPay API
+        console.log('📤 ToyyibPay request to:', `${TOYYIBPAY_BASE_URL}/index.php/api/createBill`);
+        console.log('📤 Bill data:', JSON.stringify(billData, null, 2));
+        
         const response = await axios.post(
             `${TOYYIBPAY_BASE_URL}/index.php/api/createBill`,
             new URLSearchParams(billData).toString(),
@@ -89,11 +92,12 @@ router.post('/create-bill', async (req, res) => {
             }
         );
 
+        console.log('📥 ToyyibPay response:', JSON.stringify(response.data));
         const result = response.data;
         
         if (!result || !result[0] || !result[0].BillCode) {
-            console.error('ToyyibPay bill creation failed:', JSON.stringify(result));
-            const errorMsg = result?.[0]?.msg || result?.msg || 'Failed to create payment bill';
+            console.error('❌ ToyyibPay bill creation failed:', JSON.stringify(result));
+            const errorMsg = result?.[0]?.msg || result?.msg || JSON.stringify(result) || 'Failed to create payment bill';
             await updateStatus(orderId, 'failed', { error: errorMsg });
             return res.status(500).json({ error: errorMsg });
         }
@@ -118,9 +122,13 @@ router.post('/create-bill', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('ToyyibPay bill creation error:', error);
+        console.error('❌ ToyyibPay bill creation error:', error.message);
+        if (error.response) {
+            console.error('❌ Response status:', error.response.status);
+            console.error('❌ Response data:', JSON.stringify(error.response.data));
+        }
         res.status(500).json({ 
-            error: 'Payment creation failed: ' + (error.message || 'Unknown error')
+            error: 'Payment creation failed: ' + (error.response?.data?.msg || error.message || 'Unknown error')
         });
     }
 });
